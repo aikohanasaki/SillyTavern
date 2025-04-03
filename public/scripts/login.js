@@ -128,7 +128,7 @@ async function performLogin(handle, password) {
 
         if (data.handle) {
             console.log(`Successfully logged in as ${handle}!`);
-            redirectToHome();
+            redirectToHome(data.handle);
         }
     } catch (error) {
         console.error('Error logging in:', error);
@@ -183,10 +183,12 @@ function redirectToHome() {
     // After a login theres no need to preserve the
     // noauto (if present)
     const urlParams = new URLSearchParams(window.location.search);
-
     urlParams.delete('noauto');
+    // Construct clean URL with the username
+    const destination = `/user/${handle}`;
 
-    window.location.href = '/' + urlParams.toString();
+    // Redirect with query parameters
+    window.location.href = destination + (urlParams.toString() ? `?${urlParams.toString()}` : '');
 }
 
 /**
