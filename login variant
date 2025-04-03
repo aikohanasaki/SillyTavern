@@ -1,0 +1,48 @@
+async function performLogin(handle, password) {
+    const userInfo = {
+        handle: handle,
+        password: password,
+    };
+
+    try {
+        const response = await fetch('/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrfToken,
+            },
+            body: JSON.stringify(userInfo),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return displayError(errorData.error || 'An error occurred');
+        }
+
+        const data = await response.json();
+
+        if (data.handle) {
+            console.log(`Successfully logged in as ${handle}!`);
+            redirectToHome(data.handle);
+        }
+    } catch (error) {
+        console.error('Error logging in:', error);
+        displayError(String(error));
+    }
+}
+
+
+
+function redirectToHome(handle) {
+    // After a login theres no need to preserve the
+    // noauto (if present)
+    const urlParams = new URLSearchParams(window.location.search);
+
+    urlParams.delete('noauto');
+
+    // Construct URL with the username appended to "index-"
+    const destination = `/index-${handle}.html`;
+    
+    // Redirect with query parameters
+    window.location.href = destination + (urlParams.toString() ? `?${urlParams.toString()}` : '');
+}
