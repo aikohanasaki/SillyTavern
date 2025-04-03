@@ -870,7 +870,7 @@ async function logout() {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set('noauto', 'true');
 
-    window.location.search = urlParams.toString();
+    window.location.href = 'login.html';
 }
 
 /**
