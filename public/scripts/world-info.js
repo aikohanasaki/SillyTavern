@@ -22,6 +22,7 @@ import { StructuredCloneMap } from './util/StructuredCloneMap.js';
 import { renderTemplateAsync } from './templates.js';
 import { t } from './i18n.js';
 import { accountStorage } from './util/AccountStorage.js';
+import { isAdmin, getCurrentUserHandle } from './user.js';
 
 export const world_info_insertion_strategy = {
     evenly: 0,
@@ -860,6 +861,30 @@ export function setWorldInfoSettings(settings, data) {
     $('#world_info_max_recursion_steps_counter').val(world_info_max_recursion_steps);
 
     world_names = data.world_names?.length ? data.world_names : [];
+
+	// Filters Lorebooks by file names to control viewership
+	if (Array.isArray(world_names)) {
+	  const currentUserHandle = getCurrentUserHandle();
+
+	  // Exempt "default-user" from all checks
+	  if (currentUserHandle === 'default-user') {
+		// Do nothing, world_names remains as is
+	  } else {
+		world_names = isAdmin()
+		  ? world_names
+		  : world_names.filter(name => {
+			  // Check if the filename ends with -user(handle).json
+			  const userHandleMatch = name.match(/-user([^-]+)\.json$/);
+
+			  if (userHandleMatch && userHandleMatch[1] === currentUserHandle) {
+				return true; // This user can see this specific file
+			  }
+
+			  // If it doesn't match the specific user pattern, apply the ZZZZ filter
+			  return !name.includes('ZZZZ');
+			});
+	  }
+	}
 
     // Add to existing selected WI if it exists
     selected_world_info = selected_world_info.concat(settings.world_info?.globalSelect?.filter((e) => world_names.includes(e)) ?? []);
