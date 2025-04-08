@@ -355,15 +355,7 @@ class PromptManager {
         this.handleInspect = (event) => {
             this.clearEditForm();
             this.clearInspectForm();
-
-            const promptID = event.target.closest('.' + this.configuration.prefix + 'prompt_manager_prompt').dataset.pmIdentifier;
-            if (true === this.messages.hasItemWithIdentifier(promptID)) {
-                const messages = this.messages.getItemByIdentifier(promptID);
-
-                this.loadMessagesIntoInspectForm(messages);
-
-                this.showPopup('inspect');
-            }
+            this.hidePopup('inspect');
         };
 
         // Detach selected prompt from list form and close edit form
