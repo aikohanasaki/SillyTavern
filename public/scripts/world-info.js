@@ -869,9 +869,6 @@ export function setWorldInfoSettings(settings, data) {
 		  // Exempt "default-user" from all checks
 		  if (currentUserHandle === 'default-user') {
 			// Do nothing, world_names remains as is
-		  } else if (isAdmin()) {
-			// First layer: Admin sees everything
-			// Do nothing, world_names remains as is
 		  } else {
 			// First layer: Filter out ZZZZ files
 			let filteredNames = world_names.filter(name => !name.includes('ZZZZ'));
@@ -1773,9 +1770,6 @@ export async function updateWorldInfoList() {
 
 		  // Exempt "default-user" from all checks
 		  if (currentUserHandle === 'default-user') {
-			// Do nothing, world_names remains as is
-		  } else if (isAdmin()) {
-			// First layer: Admin sees everything
 			// Do nothing, world_names remains as is
 		  } else {
 			// First layer: Filter out ZZZZ files
