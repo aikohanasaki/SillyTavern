@@ -863,28 +863,34 @@ export function setWorldInfoSettings(settings, data) {
     world_names = data.world_names?.length ? data.world_names : [];
 
 	// Filters Lorebooks by file names to control viewership
-	if (Array.isArray(world_names)) {
-	  const currentUserHandle = getCurrentUserHandle();
+		if (Array.isArray(world_names)) {
+		  const currentUserHandle = getCurrentUserHandle();
 
-	  // Exempt "default-user" from all checks
-	  if (currentUserHandle === 'default-user') {
-		// Do nothing, world_names remains as is
-	  } else {
-		world_names = isAdmin()
-		  ? world_names
-		  : world_names.filter(name => {
+		  // Exempt "default-user" from all checks
+		  if (currentUserHandle === 'default-user') {
+			// Do nothing, world_names remains as is
+		  } else if (isAdmin()) {
+			// First layer: Admin sees everything
+			// Do nothing, world_names remains as is
+		  } else {
+			// First layer: Filter out ZZZZ files
+			let filteredNames = world_names.filter(name => !name.includes('ZZZZ'));
+			
+			// Second layer: Apply user handle pattern matching
+			world_names = filteredNames.filter(name => {
 			  // Check if the filename ends with -user(handle).json
 			  const userHandleMatch = name.match(/-user([^-]+)\.json$/);
-
-			  if (userHandleMatch && userHandleMatch[1] === currentUserHandle) {
-				return true; // This user can see this specific file
+			  
+			  if (userHandleMatch) {
+				// If it has a user pattern, only keep if it matches current user
+				return userHandleMatch[1] === currentUserHandle;
 			  }
-
-			  // If it doesn't match the specific user pattern, apply the ZZZZ filter
-			  return !name.includes('ZZZZ');
+			  
+			  // Files without the user pattern pass through
+			  return true;
 			});
-	  }
-	}
+		  }
+		}
 
     // Add to existing selected WI if it exists
     selected_world_info = selected_world_info.concat(settings.world_info?.globalSelect?.filter((e) => world_names.includes(e)) ?? []);
@@ -1760,6 +1766,37 @@ export async function updateWorldInfoList() {
         world_names = data.world_names?.length ? data.world_names : [];
         $('#world_info').find('option[value!=""]').remove();
         $('#world_editor_select').find('option[value!=""]').remove();
+
+		// Filters Lorebooks by file names to control viewership
+		if (Array.isArray(world_names)) {
+		  const currentUserHandle = getCurrentUserHandle();
+
+		  // Exempt "default-user" from all checks
+		  if (currentUserHandle === 'default-user') {
+			// Do nothing, world_names remains as is
+		  } else if (isAdmin()) {
+			// First layer: Admin sees everything
+			// Do nothing, world_names remains as is
+		  } else {
+			// First layer: Filter out ZZZZ files
+			let filteredNames = world_names.filter(name => !name.includes('ZZZZ'));
+			
+			// Second layer: Apply user handle pattern matching
+			world_names = filteredNames.filter(name => {
+			  // Check if the filename ends with -user(handle).json
+			  const userHandleMatch = name.match(/-user([^-]+)\.json$/);
+			  
+			  if (userHandleMatch) {
+				// If it has a user pattern, only keep if it matches current user
+				return userHandleMatch[1] === currentUserHandle;
+			  }
+			  
+			  // Files without the user pattern pass through
+			  return true;
+			});
+		  }
+		}
+		
 
         world_names.forEach((item, i) => {
             $('#world_info').append(`<option value='${i}'${selected_world_info.includes(item) ? ' selected' : ''}>${item}</option>`);
