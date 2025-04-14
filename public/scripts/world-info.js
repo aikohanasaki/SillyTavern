@@ -875,8 +875,8 @@ export function setWorldInfoSettings(settings, data) {
 			
 			// Second layer: Apply user handle pattern matching
 			world_names = filteredNames.filter(name => {
-			  // Check if the filename matches Z-user-(handle)
-			  const userHandleMatch = name.match(/^Z-user-([^-]+)/);
+			  // Check if the filename matches Z-(handle)
+			  const userHandleMatch = name.match(/^Z-([^-]+)/);
 
 			  if (userHandleMatch) {
 				// If it has a user pattern, only keep if it matches current user
@@ -1777,8 +1777,8 @@ export async function updateWorldInfoList() {
 			
 			// Second layer: Apply user handle pattern matching
 			world_names = filteredNames.filter(name => {
-			  // Check if the filename matches Z-user-(handle)
-			  const userHandleMatch = name.match(/^Z-user-([^-]+)/);
+			  // Check if the filename matches Z-(handle)
+			  const userHandleMatch = name.match(/^Z-([^-]+)/);
 
 			  if (userHandleMatch) {
 				// If it has a user pattern, only keep if it matches current user
