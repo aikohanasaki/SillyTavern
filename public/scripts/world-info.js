@@ -875,14 +875,14 @@ export function setWorldInfoSettings(settings, data) {
 			
 			// Second layer: Apply user handle pattern matching
 			world_names = filteredNames.filter(name => {
-			  // Check if the filename ends with -user(handle).json
-			  const userHandleMatch = name.match(/-user([^-]+)\.json$/);
-			  
+			  // Check if the filename matches Z-user-(handle)
+			  const userHandleMatch = name.match(/^Z-user-([^-]+)/);
+
 			  if (userHandleMatch) {
 				// If it has a user pattern, only keep if it matches current user
 				return userHandleMatch[1] === currentUserHandle;
 			  }
-			  
+
 			  // Files without the user pattern pass through
 			  return true;
 			});
@@ -1764,7 +1764,7 @@ export async function updateWorldInfoList() {
         $('#world_info').find('option[value!=""]').remove();
         $('#world_editor_select').find('option[value!=""]').remove();
 
-		// Filters Lorebooks by file names to control viewership
+	// Filters Lorebooks by file names to control viewership
 		if (Array.isArray(world_names)) {
 		  const currentUserHandle = getCurrentUserHandle();
 
@@ -1777,14 +1777,14 @@ export async function updateWorldInfoList() {
 			
 			// Second layer: Apply user handle pattern matching
 			world_names = filteredNames.filter(name => {
-			  // Check if the filename ends with -user(handle).json
-			  const userHandleMatch = name.match(/-user([^-]+)\.json$/);
-			  
+			  // Check if the filename matches Z-user-(handle)
+			  const userHandleMatch = name.match(/^Z-user-([^-]+)/);
+
 			  if (userHandleMatch) {
 				// If it has a user pattern, only keep if it matches current user
 				return userHandleMatch[1] === currentUserHandle;
 			  }
-			  
+
 			  // Files without the user pattern pass through
 			  return true;
 			});
