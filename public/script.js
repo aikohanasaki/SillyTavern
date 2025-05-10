@@ -5544,7 +5544,7 @@ export function findItemizedPromptSet(itemizedPrompts, incomingMesId) {
 }
 
 async function promptItemize(itemizedPrompts, requestedMesId) {
-/*    console.log('PROMPT ITEMIZE ENTERED');
+    console.log('PROMPT ITEMIZE ENTERED');
     var incomingMesId = Number(requestedMesId);
     console.debug(`looking for MesId ${incomingMesId}`);
     var thisPromptSet = findItemizedPromptSet(itemizedPrompts, incomingMesId);
@@ -5563,9 +5563,8 @@ async function promptItemize(itemizedPrompts, requestedMesId) {
         : await renderTemplateAsync('itemizationText', params);
 
     const popup = new Popup(template, POPUP_TYPE.TEXT);
-*/
+
     /** @type {HTMLElement} */
-/*
     const diffPrevPrompt = popup.dlg.querySelector('#diffPrevPrompt');
     if (priorPromptArrayItemForRawPromptDisplay) {
         diffPrevPrompt.style.display = '';
@@ -5629,7 +5628,6 @@ async function promptItemize(itemizedPrompts, requestedMesId) {
     });
 
     await popup.show();
-*/
 }
 
 function setInContextMessages(msgInContextCount, type) {
