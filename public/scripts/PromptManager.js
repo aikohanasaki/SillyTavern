@@ -346,9 +346,9 @@ class PromptManager {
             const promptID = event.target.closest('.' + this.configuration.prefix + 'prompt_manager_prompt').dataset.pmIdentifier;
             const prompt = this.getPromptById(promptID);
 
-            this.loadPromptIntoEditForm(prompt);
+            //this.loadPromptIntoEditForm(prompt);
 
-            this.showPopup();
+            //this.showPopup();
         };
 
         // Open edit form and load selected prompt
